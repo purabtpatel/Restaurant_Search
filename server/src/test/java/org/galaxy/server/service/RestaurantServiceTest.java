@@ -55,7 +55,7 @@ public class RestaurantServiceTest {
             List<Restaurant> results = restaurantService.basicSearch(options);
 
             assertEquals(1, results.size());
-            assertEquals("Deliciousgenix", results.get(0).getName());
+            assertEquals("Deliciousgenix", results.getFirst().getName());
         }
 
         @Test
@@ -78,13 +78,49 @@ public class RestaurantServiceTest {
             List<Restaurant> results = restaurantService.basicSearch(options);
 
             assertEquals(1, results.size());
-            assertEquals("Local Delicious", results.get(0).getName());
+            assertEquals("Local Delicious", results.getFirst().getName());
         }
 
         @Test
         void testSearchByRatingNoMatch() {
             RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
                     .rating(1)
+                    .build();
+
+            List<Restaurant> results = restaurantService.basicSearch(options);
+
+            assertTrue(results.isEmpty());
+        }
+        @Test
+        void testSearchByDistanceExactMatch() {
+            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+                    .distance(9)
+                    .build();
+
+            List<Restaurant> results = restaurantService.basicSearch(options);
+
+            assertEquals(1, results.size());
+            assertEquals("Cuts Delicious", results.getFirst().getName());
+        }
+
+        @Test
+        void testSearchByDistanceMultipleMatches() {
+            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+                    .distance(1)
+                    .build();
+
+            List<Restaurant> results = restaurantService.basicSearch(options);
+
+            assertEquals(3, results.size());
+            assertTrue(results.stream().anyMatch(r -> r.getName().equals("Deliciousgenix")));
+            assertTrue(results.stream().anyMatch(r -> r.getName().equals("Deliciouszilla")));
+            assertTrue(results.stream().anyMatch(r -> r.getName().equals("Wish Chow")));
+        }
+
+        @Test
+        void testSearchByDistanceNoMatch() {
+            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+                    .distance(99)
                     .build();
 
             List<Restaurant> results = restaurantService.basicSearch(options);
@@ -103,7 +139,7 @@ public class RestaurantServiceTest {
             List<Restaurant> results = restaurantService.basicSearch(options);
 
             assertEquals(1, results.size());
-            assertEquals("Deliciouszilla", results.get(0).getName());
+            assertEquals("Deliciouszilla", results.getFirst().getName());
         }
 
         @Test
@@ -112,6 +148,120 @@ public class RestaurantServiceTest {
                     .build();
 
             List<Restaurant> results = restaurantService.basicSearch(options);
+
+            assertEquals(mockRestaurants.size(), results.size());
+        }
+    }
+
+    @Nested
+    class AdvancedSearchTests {
+
+        @Test
+        void testSearchByNamePartialMatch() {
+            // Should match "Deliciousgenix", "Cuts Delicious", "Fine Delicious", "Local Delicious", "Deliciouszilla"
+            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+                    .name("Delicious")
+                    .build();
+
+            List<Restaurant> results = restaurantService.advancedSearch(options);
+
+            assertEquals(5, results.size());
+            assertTrue(results.stream().noneMatch(r -> r.getName().equals("Wish Chow")));
+        }
+
+        @Test
+        void testSearchByRatingGreaterOrEqual() {
+            // Logic: >= 4
+            // Matches: 4, 4, 5, 4 (Deliciousgenix, Fine Delicious, Local Delicious, Deliciouszilla)
+            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+                    .rating(4)
+                    .build();
+
+            List<Restaurant> results = restaurantService.advancedSearch(options);
+
+            assertEquals(4, results.size());
+            assertTrue(results.stream().allMatch(r -> r.getRating() >= 4));
+        }
+
+        @Test
+        void testSearchByDistanceLessOrEqual() {
+            // Logic: <= 5
+            // Matches: 1, 5, 4, 1, 1 (All except "Cuts Delicious" which is 9)
+            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+                    .distance(5)
+                    .build();
+
+            List<Restaurant> results = restaurantService.advancedSearch(options);
+
+            assertEquals(5, results.size());
+            assertTrue(results.stream().noneMatch(r -> r.getName().equals("Cuts Delicious")));
+        }
+
+        @Test
+        void testSearchByPriceLessOrEqual() {
+            // Logic: <= 20
+            // Matches: 10, 20, 15 (Deliciousgenix, Local Delicious, Deliciouszilla)
+            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+                    .price(20)
+                    .build();
+
+            List<Restaurant> results = restaurantService.advancedSearch(options);
+
+            assertEquals(3, results.size());
+            assertTrue(results.stream().allMatch(r -> r.getPrice() <= 20));
+        }
+
+        @Test
+        void testSearchByCuisinePartialMatch() {
+            // Logic: contains "an"
+            // Matches: Sp(an)ish, Kore(an), Itali(an), Americ(an)
+            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+                    .cuisine("an")
+                    .build();
+
+            List<Restaurant> results = restaurantService.advancedSearch(options);
+
+            assertEquals(4, results.size());
+            assertTrue(results.stream().anyMatch(r -> r.getCuisine().equals("Spanish")));
+            assertTrue(results.stream().anyMatch(r -> r.getCuisine().equals("American")));
+        }
+
+        @Test
+        void testSearchCombinedCriteria() {
+            // Filter: Rating >= 4 AND Price <= 20
+            // Candidates (Rating >= 4): Deliciousgenix (10), Fine Delicious (45), Local Delicious (20), Deliciouszilla (15)
+            // Apply Price <= 20: Deliciousgenix, Local Delicious, Deliciouszilla
+            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+                    .rating(4)
+                    .price(20)
+                    .build();
+
+            List<Restaurant> results = restaurantService.advancedSearch(options);
+
+            assertEquals(3, results.size());
+            assertTrue(results.stream().noneMatch(r -> r.getName().equals("Fine Delicious")));
+        }
+
+        @Test
+        void testSearchReturnsEmptyWhenNoMatches() {
+            // Logic: Rating >= 5 (Local Delicious) AND Price <= 10 (Deliciousgenix)
+            // Intersection is empty
+            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+                    .rating(5)
+                    .price(10)
+                    .build();
+
+            List<Restaurant> results = restaurantService.advancedSearch(options);
+
+            assertTrue(results.isEmpty());
+        }
+
+        @Test
+        void testSearchWithEmptyOptionsReturnsAll() {
+            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+                    .build();
+
+            List<Restaurant> results = restaurantService.advancedSearch(options);
 
             assertEquals(mockRestaurants.size(), results.size());
         }

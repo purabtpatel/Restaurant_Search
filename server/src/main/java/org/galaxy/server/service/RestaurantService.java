@@ -19,12 +19,25 @@ public class RestaurantService {
     public List<Restaurant> basicSearch(RestaurantSearchOptions options) {
 
         return restaurantDataLoader.getRestaurants().stream()
-                .filter(r -> options.getName() == null || r.getName().equalsIgnoreCase(options.getName()))
+                .filter(r -> options.getDistance() == null || r.getDistance().equals(options.getDistance()))
                 .filter(r -> options.getRating() == null || r.getRating().equals(options.getRating()))
                 .filter(r -> options.getPrice() == null || r.getPrice().equals(options.getPrice()))
                 .filter(r -> options.getCuisine() == null || r.getCuisine().equals(options.getCuisine()))
+                .filter(r -> options.getName() == null || r.getName().equalsIgnoreCase(options.getName()))
                 .toList();
     }
+
+    public List<Restaurant> advancedSearch(RestaurantSearchOptions options) {
+
+        return restaurantDataLoader.getRestaurants().stream()
+                .filter(r -> options.getRating() == null || r.getRating() >= options.getRating())
+                .filter(r -> options.getDistance() == null || r.getDistance() <= options.getDistance())
+                .filter(r -> options.getPrice() == null || r.getPrice() <= options.getPrice())
+                .filter(r -> options.getName() == null || r.getName().contains(options.getName()))
+                .filter(r -> options.getCuisine() == null || r.getCuisine().contains(options.getCuisine()))
+                .toList();
+    }
+
 
 
 }
