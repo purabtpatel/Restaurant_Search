@@ -3,7 +3,6 @@ package org.galaxy.server.service;
 import org.galaxy.server.loader.RestaurantDataLoader;
 import org.galaxy.server.model.Restaurant;
 import org.galaxy.server.model.RestaurantSearchOptions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +10,10 @@ import java.util.List;
 @Service
 public class RestaurantService {
 
-    private RestaurantDataLoader restaurantDataLoader;
+    private final RestaurantDataLoader restaurantDataLoader;
 
-    public RestaurantService() {
+    public RestaurantService(RestaurantDataLoader restaurantDataLoader) {
+        this.restaurantDataLoader = restaurantDataLoader;
     }
 
     public List<Restaurant> basicSearch(RestaurantSearchOptions options) {
