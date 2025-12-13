@@ -11,6 +11,16 @@ public class Restaurant {
     private Integer cuisineId;
     private String cuisine;
 
+    public Restaurant() {}
+    public Restaurant(String name, Integer rating, Integer distance, Integer price, Integer cuisineId, String cuisine) {
+        this.name = name;
+        this.rating = rating;
+        this.distance = distance;
+        this.price = price;
+        this.cuisineId = cuisineId;
+        this.cuisine = cuisine;
+    }
+
     public String toString() {
         return "Name: " + name +
             ", Rating: " + rating +

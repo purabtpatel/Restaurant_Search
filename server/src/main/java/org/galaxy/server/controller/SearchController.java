@@ -1,5 +1,6 @@
 package org.galaxy.server.controller;
 
+import org.galaxy.server.model.RestaurantSearchOptions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,15 @@ public class SearchController {
             @RequestParam(required = false) Integer price,
             @RequestParam(required = false) String cuisine
     ) {
+
+        RestaurantSearchOptions inputOptions = new RestaurantSearchOptions.Builder()
+                .name(name)
+                .rating(rating)
+                .distance(distance)
+                .price(price)
+                .cuisine(cuisine)
+                .build();
+
         return "Search";
     }
 }
