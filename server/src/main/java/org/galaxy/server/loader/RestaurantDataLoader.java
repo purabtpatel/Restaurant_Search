@@ -21,13 +21,12 @@ public class RestaurantDataLoader {
 
     @Getter
     private List<Restaurant> restaurants = new ArrayList<>();
-    private Map<Integer, String> cuisineMap = new HashMap<>();
 
     @PostConstruct
     public void loadData() {
         System.out.println("Starting data load...");
         try {
-            cuisineMap = loadCuisines();
+            Map<Integer, String> cuisineMap = loadCuisines();
             loadRestaurants(cuisineMap);
             System.out.println("Data load complete. Total restaurants: " + restaurants.size());
         } catch (IOException e) {

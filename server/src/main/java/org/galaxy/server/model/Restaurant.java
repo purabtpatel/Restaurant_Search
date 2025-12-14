@@ -3,7 +3,7 @@ package org.galaxy.server.model;
 import lombok.Data;
 
 @Data
-public class Restaurant {
+public class Restaurant{
     private String name;
     private Integer rating;
     private Integer distance;

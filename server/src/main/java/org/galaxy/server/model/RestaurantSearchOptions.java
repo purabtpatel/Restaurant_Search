@@ -13,6 +13,9 @@ public class RestaurantSearchOptions {
     private Integer price;
     @Getter
     private String cuisine;
+    @Getter
+    private Integer limit;
+
 
     private RestaurantSearchOptions(Builder builder) {
         this.name = builder.name;
@@ -20,6 +23,7 @@ public class RestaurantSearchOptions {
         this.distance = builder.distance;
         this.price = builder.price;
         this.cuisine = builder.cuisine;
+        this.limit = builder.limit;
     }
 
 
@@ -29,6 +33,7 @@ public class RestaurantSearchOptions {
         private Integer distance;
         private Integer price;
         private String cuisine;
+        private Integer limit;
 
         public Builder name(String name){
             this.name = name;
@@ -48,6 +53,10 @@ public class RestaurantSearchOptions {
         }
         public Builder cuisine(String cuisine){
             this.cuisine = cuisine;
+            return this;
+        }
+        public Builder limit(Integer limit){
+            this.limit = limit;
             return this;
         }
         public RestaurantSearchOptions build(){

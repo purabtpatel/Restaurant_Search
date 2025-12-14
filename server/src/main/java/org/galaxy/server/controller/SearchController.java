@@ -46,7 +46,8 @@ public class SearchController {
             @RequestParam(required = false) Integer rating,
             @RequestParam(required = false) Integer distance,
             @RequestParam(required = false) Integer price,
-            @RequestParam(required = false) String cuisine)
+            @RequestParam(required = false) String cuisine,
+            @RequestParam(required = false) Integer limit)
     {
         RestaurantSearchOptions inputOptions = new RestaurantSearchOptions.Builder()
                 .name(name)
@@ -54,6 +55,7 @@ public class SearchController {
                 .distance(distance)
                 .price(price)
                 .cuisine(cuisine)
+                .limit(limit)
                 .build();
         return restaurantService.advancedSearch(inputOptions).toString();
     }
