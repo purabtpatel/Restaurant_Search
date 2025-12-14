@@ -1,15 +1,20 @@
 package org.galaxy.server.controller;
 
+import org.galaxy.server.model.Restaurant;
 import org.galaxy.server.model.RestaurantSearchOptions;
 import org.galaxy.server.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/search")
+@CrossOrigin(origins = "http://localhost:5173")
 public class SearchController {
 
     private final RestaurantService restaurantService;
@@ -21,7 +26,7 @@ public class SearchController {
 
     @GetMapping
     @RequestMapping("/basic")
-    public String getBasicSearch(
+    public List<Restaurant> getBasicSearch(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer rating,
             @RequestParam(required = false) Integer distance,
@@ -36,12 +41,12 @@ public class SearchController {
                 .price(price)
                 .cuisine(cuisine)
                 .build();
-        return restaurantService.basicSearch(inputOptions).toString();
+        return restaurantService.basicSearch(inputOptions);
     }
 
     @GetMapping
     @RequestMapping("/advanced")
-    public String getAdvancedSearch(
+    public List<Restaurant> getAdvancedSearch(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer rating,
             @RequestParam(required = false) Integer distance,
@@ -57,6 +62,6 @@ public class SearchController {
                 .cuisine(cuisine)
                 .limit(limit)
                 .build();
-        return restaurantService.advancedSearch(inputOptions).toString();
+        return restaurantService.advancedSearch(inputOptions);
     }
 }

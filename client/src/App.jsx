@@ -1,34 +1,68 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
+import SearchBar from './components/SearchBar'
+import RestaurantList from './components/RestaurantList'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [restaurants, setRestaurants] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  const API_BASE_URL = 'http://localhost:8080/search'
+
+  const fetchRestaurants = async (filters = {}) => {
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const queryParams = new URLSearchParams()
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== '' && value !== null && value !== undefined) {
+          queryParams.append(key, value)
+        }
+      })
+
+      const url = `${API_BASE_URL}/advanced${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
+      const response = await fetch(url)
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setRestaurants(data)
+    } catch (err) {
+      setError(err.message || 'Failed to fetch restaurants. Please try again.')
+      setRestaurants([])
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchRestaurants()
+  }, [])
+
+  const handleSearch = (filters) => {
+    fetchRestaurants(filters)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app">
+      <header className="app-header">
+        <h1 className="app-title">🍽️ Restaurant Search</h1>
+        <p className="app-subtitle">Find your perfect dining experience</p>
+      </header>
+
+      <main className="app-main">
+        <SearchBar onSearch={handleSearch} isLoading={isLoading} />
+        <RestaurantList
+          restaurants={restaurants}
+          isLoading={isLoading}
+          error={error}
+        />
+      </main>
+    </div>
   )
 }
 
