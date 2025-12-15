@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import SearchBar from './components/SearchBar'
 import RestaurantList from './components/RestaurantList'
 import './App.css'
@@ -39,9 +39,6 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    fetchRestaurants()
-  }, [])
 
   const handleSearch = (filters) => {
     fetchRestaurants(filters)

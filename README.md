@@ -133,4 +133,9 @@ Check the console output for the exact ports if they differ.
 
 ---
 
+## Assumptions & compromises
+
+* I chose to focus on the search functionality and the structure of the spring boot backend
+* I did not focus too much on the frontend and allowed claude agent to generate a majority of the code given the GET endpoint
+
 You should now be able to clone the repository, install dependencies, and run the application successfully.

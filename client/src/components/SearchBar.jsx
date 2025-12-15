@@ -8,7 +8,7 @@ const SearchBar = ({ onSearch, isLoading }) => {
     distance: '',
     price: '',
     cuisine: '',
-    limit: '20'
+    limit: ''
   });
 
   const handleChange = (e) => {
@@ -31,7 +31,7 @@ const SearchBar = ({ onSearch, isLoading }) => {
       distance: '',
       price: '',
       cuisine: '',
-      limit: '20'
+      limit: ''
     });
     onSearch({});
   };

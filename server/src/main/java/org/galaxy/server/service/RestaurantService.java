@@ -38,8 +38,8 @@ public class RestaurantService {
                 .filter(r -> options.getRating() == null || r.getRating() >= options.getRating())
                 .filter(r -> options.getDistance() == null || r.getDistance() <= options.getDistance())
                 .filter(r -> options.getPrice() == null || r.getPrice() <= options.getPrice())
-                .filter(r -> options.getName() == null || r.getName().contains(options.getName()))
-                .filter(r -> options.getCuisine() == null || r.getCuisine().contains(options.getCuisine()))
+                .filter(r -> options.getName() == null || r.getName().toLowerCase().contains(options.getName().toLowerCase()))
+                .filter(r -> options.getCuisine() == null || r.getCuisine().toLowerCase().contains(options.getCuisine().toLowerCase()))
                 .forEach(queue::add);
 
         List<Restaurant> res = new ArrayList<>();
