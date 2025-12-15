@@ -64,7 +64,7 @@ public class RestaurantServiceTest {
             List<Restaurant> results = restaurantService.basicSearch(options);
 
             assertEquals(1, results.size());
-            assertEquals("Deliciousgenix", results.getFirst().getName());
+            assertEquals("Deliciousgenix", results.get(0).getName());
         }
 
         @Test
@@ -88,7 +88,7 @@ public class RestaurantServiceTest {
             List<Restaurant> results = restaurantService.basicSearch(options);
 
             assertEquals(1, results.size());
-            assertEquals("Local Delicious", results.getFirst().getName());
+            assertEquals("Local Delicious", results.get(0).getName());
         }
 
         @Test
@@ -112,7 +112,7 @@ public class RestaurantServiceTest {
             List<Restaurant> results = restaurantService.basicSearch(options);
 
             assertEquals(1, results.size());
-            assertEquals("Cuts Delicious", results.getFirst().getName());
+            assertEquals("Cuts Delicious", results.get(0).getName());
         }
 
         @Test
@@ -154,7 +154,7 @@ public class RestaurantServiceTest {
             List<Restaurant> results = restaurantService.basicSearch(options);
 
             assertEquals(1, results.size());
-            assertEquals("Deliciouszilla", results.getFirst().getName());
+            assertEquals("Deliciouszilla", results.get(0).getName());
         }
 
         @Test
