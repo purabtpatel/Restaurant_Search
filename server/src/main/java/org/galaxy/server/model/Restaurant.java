@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Restaurant{
+    private Integer id;
     private String name;
     private Integer rating;
     private Integer distance;
@@ -12,7 +13,8 @@ public class Restaurant{
     private String cuisine;
 
     public Restaurant() {}
-    public Restaurant(String name, Integer rating, Integer distance, Integer price, Integer cuisineId, String cuisine) {
+    public Restaurant(Integer id, String name, Integer rating, Integer distance, Integer price, Integer cuisineId, String cuisine) {
+        this.id = id;
         this.name = name;
         this.rating = rating;
         this.distance = distance;
@@ -22,7 +24,8 @@ public class Restaurant{
     }
 
     public String toString() {
-        return "Name: " + name +
+        return "ID: " + id +
+            ", Name: " + name +
             ", Rating: " + rating +
             ", Distance: " + distance +
             ", Price: " + price +

@@ -34,17 +34,17 @@ public class RestaurantServiceTest {
         // Define mock data that includes clear tie-breaker scenarios for advanced search validation.
         mockRestaurants = Arrays.asList(
                 // R1: Distance 1, Rating 4, Price 10, Cuisine Spanish
-                new Restaurant("Deliciousgenix", 4, 1, 10, 11, "Spanish"),
+                new Restaurant(1, "Deliciousgenix", 4, 1, 10, 11, "Spanish"),
                 // R2: Distance 9, Rating 3, Price 25, Cuisine Korean
-                new Restaurant("Cuts Delicious", 3, 9, 25, 8, "Korean"),
+                new Restaurant(2, "Cuts Delicious", 3, 9, 25, 8, "Korean"),
                 // R3: Distance 5, Rating 4, Price 45, Cuisine Italian
-                new Restaurant("Fine Delicious", 4, 5, 45, 4, "Italian"),
+                new Restaurant(3, "Fine Delicious", 4, 5, 45, 4, "Italian"),
                 // R4: Distance 4, Rating 5, Price 20, Cuisine Greek
-                new Restaurant("Local Delicious", 5, 4, 20, 12, "Greek"),
+                new Restaurant(4, "Local Delicious", 5, 4, 20, 12, "Greek"),
                 // R5: Distance 1, Rating 4, Price 15, Cuisine Chinese (Tie-breaker for R1: same D/R, higher P)
-                new Restaurant("Deliciouszilla", 4, 1, 15, 2, "Chinese"),
+                new Restaurant(5, "Deliciouszilla", 4, 1, 15, 2, "Chinese"),
                 // R6: Distance 1, Rating 3, Price 40, Cuisine American
-                new Restaurant("Wish Chow", 3, 1, 40, 1, "American")
+                new Restaurant(6, "Wish Chow", 3, 1, 40, 1, "American")
         );
 
         when(restaurantDataLoader.getRestaurants()).thenReturn(mockRestaurants);

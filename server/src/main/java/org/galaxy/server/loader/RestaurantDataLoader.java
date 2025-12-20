@@ -69,18 +69,19 @@ public class RestaurantDataLoader {
 
                 String[] parts = line.split(",");
 
-                if (parts.length >= 5) {
+                if (parts.length >= 6) {
                     try {
                         Restaurant restaurant = new Restaurant();
 
                         // Parse columns based on your CSV order:
-                        // name, customer_rating, distance, price, cuisine_id
-                        restaurant.setName(parts[0].trim());
-                        restaurant.setRating(Integer.parseInt(parts[1].trim()));
-                        restaurant.setDistance(Integer.parseInt(parts[2].trim()));
-                        restaurant.setPrice(Integer.parseInt(parts[3].trim()));
+                        // id, name, customer_rating, distance, price, cuisine_id
+                        restaurant.setId(Integer.parseInt(parts[0].trim()));
+                        restaurant.setName(parts[1].trim());
+                        restaurant.setRating(Integer.parseInt(parts[2].trim()));
+                        restaurant.setDistance(Integer.parseInt(parts[3].trim()));
+                        restaurant.setPrice(Integer.parseInt(parts[4].trim()));
 
-                        int cuisineId = Integer.parseInt(parts[4].trim());
+                        int cuisineId = Integer.parseInt(parts[5].trim());
                         restaurant.setCuisineId(cuisineId);
 
                         // Map the ID to the actual name string
