@@ -24,8 +24,7 @@ public class SearchController {
         this.restaurantService = restaurantService;
     }
 
-    @GetMapping
-    @RequestMapping("/basic")
+    @GetMapping("/basic")
     public List<Restaurant> getBasicSearch(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer rating,
@@ -44,8 +43,7 @@ public class SearchController {
         return restaurantService.basicSearch(inputOptions);
     }
 
-    @GetMapping
-    @RequestMapping("/advanced")
+    @GetMapping("/advanced")
     public List<Restaurant> getAdvancedSearch(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer rating,
