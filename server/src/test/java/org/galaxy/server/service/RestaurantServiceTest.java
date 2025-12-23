@@ -1,6 +1,6 @@
 package org.galaxy.server.service;
 
-import org.galaxy.server.loader.RestaurantDataLoader;
+import org.galaxy.server.loader.DataLoader;
 import org.galaxy.server.model.Restaurant;
 import org.galaxy.server.model.RestaurantSearchOptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class RestaurantServiceTest {
 
     @Mock
-    private RestaurantDataLoader restaurantDataLoader;
+    private DataLoader dataLoader;
 
     @InjectMocks
     private RestaurantService restaurantService;
@@ -47,7 +47,7 @@ public class RestaurantServiceTest {
                 new Restaurant(6, "Wish Chow", 3, 1, 40, 1, "American")
         );
 
-        when(restaurantDataLoader.getRestaurants()).thenReturn(mockRestaurants);
+        when(dataLoader.getRestaurants()).thenReturn(mockRestaurants);
     }
 
     @Nested

@@ -1,6 +1,6 @@
 package org.galaxy.server.service;
 
-import org.galaxy.server.loader.RestaurantDataLoader;
+import org.galaxy.server.loader.DataLoader;
 import org.galaxy.server.model.Restaurant;
 import org.galaxy.server.model.RestaurantComparator;
 import org.galaxy.server.model.RestaurantSearchOptions;
@@ -13,15 +13,15 @@ import java.util.PriorityQueue;
 @Service
 public class RestaurantService {
 
-    private final RestaurantDataLoader restaurantDataLoader;
+    private final DataLoader dataLoader;
 
-    public RestaurantService(RestaurantDataLoader restaurantDataLoader) {
-        this.restaurantDataLoader = restaurantDataLoader;
+    public RestaurantService(DataLoader dataLoader) {
+        this.dataLoader = dataLoader;
     }
 
     public List<Restaurant> basicSearch(RestaurantSearchOptions options) {
 
-        return restaurantDataLoader.getRestaurants().stream()
+        return dataLoader.getRestaurants().stream()
                 .filter(r -> options.getDistance() == null || r.getDistance().equals(options.getDistance()))
                 .filter(r -> options.getRating() == null || r.getRating().equals(options.getRating()))
                 .filter(r -> options.getPrice() == null || r.getPrice().equals(options.getPrice()))
@@ -34,7 +34,7 @@ public class RestaurantService {
         PriorityQueue<Restaurant> queue = new PriorityQueue<>(new RestaurantComparator());
         int limit = options.getLimit() == null ? 5 : options.getLimit();
 
-        restaurantDataLoader.getRestaurants().stream()
+        dataLoader.getRestaurants().stream()
                 .filter(r -> options.getRating() == null || r.getRating() >= options.getRating())
                 .filter(r -> options.getDistance() == null || r.getDistance() <= options.getDistance())
                 .filter(r -> options.getPrice() == null || r.getPrice() <= options.getPrice())

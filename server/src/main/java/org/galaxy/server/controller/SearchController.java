@@ -62,4 +62,6 @@ public class SearchController {
                 .build();
         return restaurantService.advancedSearch(inputOptions);
     }
+
+
 }
