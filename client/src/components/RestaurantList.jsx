@@ -1,7 +1,7 @@
 import RestaurantCard from './RestaurantCard';
 import './RestaurantList.css';
 
-const RestaurantList = ({ restaurants, isLoading, error }) => {
+const RestaurantList = ({ restaurants, isLoading, error, onRestaurantClick }) => {
   if (isLoading) {
     return (
       <div className="loading-container">
@@ -34,7 +34,11 @@ const RestaurantList = ({ restaurants, isLoading, error }) => {
       </div>
       <div className="restaurant-grid">
         {restaurants.map((restaurant, index) => (
-          <RestaurantCard key={restaurant.id || index} restaurant={restaurant} />
+          <RestaurantCard
+            key={restaurant.id || index}
+            restaurant={restaurant}
+            onClick={() => onRestaurantClick(restaurant)}
+          />
         ))}
       </div>
     </div>

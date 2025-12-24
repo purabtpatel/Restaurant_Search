@@ -40,7 +40,7 @@ public class DataLoader {
         try {
             Map<Integer, String> cuisineMap = loadCuisines();
             loadRestaurants(cuisineMap);
-//          generateReservations();
+//            generateReservations();
             System.out.println("Data load complete. Total restaurants: " + restaurants.size());
         } catch (IOException e) {
             throw new RuntimeException("Failed to load restaurant data", e);
@@ -113,39 +113,39 @@ public class DataLoader {
         System.out.println("Loaded " + restaurants.size() + " restaurants.");
     }
 
-//    private void generateReservations() {
-//        System.out.println("Generating mock reservations...");
-//        int daysToGenerate = 30;
-//
-//        for (Restaurant restaurant : restaurants) {
-//            for (int dayOffset = 0; dayOffset < daysToGenerate; dayOffset++) {
-//                LocalDateTime date = LocalDateTime.now().plusDays(dayOffset).withHour(10).withMinute(0);
-//                int reservationsPerDay = 50 + random.nextInt(11); // 50–60
-//
-//                for (int i = 0; i < reservationsPerDay; i++) {
-//                    int guestCount = 1 + random.nextInt(6); // 1–6 guests
-//
-//                    // Reservation duration 30, 45, or 60 minutes
-//                    double segment = random.nextDouble();
-//                    int durationMinutes = 30 + segment > .66 ? 30 : segment > .33 ? 15 : 0;
-//
-//                    // Random start time between 10 AM and 10 PM
-//                    LocalTime startTime = LocalTime.of(10 + random.nextInt(12), random.nextBoolean() ? 0 : 30);
-//                    LocalDateTime startDateTime = date.withHour(startTime.getHour()).withMinute(startTime.getMinute());
-//                    LocalDateTime endDateTime = startDateTime.plusMinutes(durationMinutes);
-//
-//                    Reservation reservation = new Reservation();
-//                    reservation.setRestaurantId(Long.valueOf(restaurant.getId()));
-//                    reservation.setReservationName("Guest " + (i + 1));
-//                    reservation.setGuestCount(guestCount);
-//                    reservation.setStartTime(startDateTime);
-//                    reservation.setEndTime(endDateTime);
-//
-//                    reservationRepository.save(reservation);
-//                }
-//            }
-//        }
-//
-//        System.out.println("Mock reservations generated.");
-//    }
+    private void generateReservations() {
+        System.out.println("Generating mock reservations...");
+        int daysToGenerate = 30;
+
+        for (Restaurant restaurant : restaurants) {
+            for (int dayOffset = 0; dayOffset < daysToGenerate; dayOffset++) {
+                LocalDateTime date = LocalDateTime.now().plusDays(dayOffset).withHour(10).withMinute(0);
+                int reservationsPerDay = random.nextInt(3); // 0-10
+
+                for (int i = 0; i < reservationsPerDay; i++) {
+                    int guestCount = 1 + random.nextInt(6); // 1–6 guests
+
+                    // Reservation duration 30, 45, or 60 minutes
+                    double segment = random.nextDouble();
+                    int durationMinutes = 30 + (segment > .66 ? 30 : segment > .33 ? 15 : 0);
+
+                    // Random start time between 10 AM and 10 PM
+                    LocalTime startTime = LocalTime.of(10 + random.nextInt(12), random.nextBoolean() ? 0 : 30);
+                    LocalDateTime startDateTime = date.withHour(startTime.getHour()).withMinute(startTime.getMinute());
+                    LocalDateTime endDateTime = startDateTime.plusMinutes(durationMinutes);
+
+                    Reservation reservation = new Reservation();
+                    reservation.setRestaurantId(Long.valueOf(restaurant.getId()));
+                    reservation.setReservationName("Guest " + (i + 1));
+                    reservation.setGuestCount(guestCount);
+                    reservation.setStartTime(startDateTime);
+                    reservation.setEndTime(endDateTime);
+
+                    reservationRepository.save(reservation);
+                }
+            }
+        }
+
+        System.out.println("Mock reservations generated.");
+    }
 }

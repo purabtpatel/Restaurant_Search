@@ -1,14 +1,19 @@
 import { useState } from 'react'
 import SearchBar from './components/SearchBar'
 import RestaurantList from './components/RestaurantList'
+import ReservationModal from './components/ReservationModal'
 import './App.css'
 
 function App() {
   const [restaurants, setRestaurants] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null)
+  const [reservations, setReservations] = useState([])
+  const [isReservationsLoading, setIsReservationsLoading] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const API_BASE_URL = 'http://localhost:8080/search'
+  const API_BASE_URL = 'http://localhost:8080'
 
   const fetchRestaurants = async (filters = {}) => {
     setIsLoading(true)
@@ -22,7 +27,7 @@ function App() {
         }
       })
 
-      const url = `${API_BASE_URL}/advanced${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
+      const url = `${API_BASE_URL}/search/advanced${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
       const response = await fetch(url)
 
       if (!response.ok) {
@@ -39,6 +44,34 @@ function App() {
     }
   }
 
+  const fetchReservations = async (restaurantId) => {
+    setIsReservationsLoading(true)
+    try {
+      const response = await fetch(`${API_BASE_URL}/reservations/restaurant/${restaurantId}`)
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`)
+      }
+      const data = await response.json()
+      setReservations(data)
+    } catch (err) {
+      console.error('Failed to fetch reservations:', err)
+      setReservations([])
+    } finally {
+      setIsReservationsLoading(false)
+    }
+  }
+
+  const handleRestaurantClick = (restaurant) => {
+    setSelectedRestaurant(restaurant)
+    setIsModalOpen(true)
+    fetchReservations(restaurant.id)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedRestaurant(null)
+    setReservations([])
+  }
 
   const handleSearch = (filters) => {
     fetchRestaurants(filters)
@@ -57,8 +90,17 @@ function App() {
           restaurants={restaurants}
           isLoading={isLoading}
           error={error}
+          onRestaurantClick={handleRestaurantClick}
         />
       </main>
+
+      <ReservationModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        restaurant={selectedRestaurant}
+        reservations={reservations}
+        isLoading={isReservationsLoading}
+      />
     </div>
   )
 }

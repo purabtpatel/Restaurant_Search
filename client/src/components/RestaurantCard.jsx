@@ -1,8 +1,8 @@
 import './RestaurantCard.css';
 
-const RestaurantCard = ({ restaurant }) => {
+const RestaurantCard = ({ restaurant, onClick }) => {
   return (
-    <div className="restaurant-card">
+    <div className="restaurant-card" onClick={onClick} style={{ cursor: 'pointer' }}>
       <div className="card-header">
         <h3 className="restaurant-name">{restaurant.name}</h3>
         <div className="rating">
