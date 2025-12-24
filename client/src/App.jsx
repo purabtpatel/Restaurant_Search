@@ -61,6 +61,32 @@ function App() {
     }
   }
 
+  const createReservation = async (reservationData) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/reservations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reservationData),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || `Server error: ${response.status}`)
+      }
+
+      // Refresh reservations for the current restaurant
+      if (selectedRestaurant) {
+        await fetchReservations(selectedRestaurant.id)
+      }
+      return { success: true }
+    } catch (err) {
+      console.error('Failed to create reservation:', err)
+      return { success: false, error: err.message }
+    }
+  }
+
   const handleRestaurantClick = (restaurant) => {
     setSelectedRestaurant(restaurant)
     setIsModalOpen(true)
@@ -100,6 +126,7 @@ function App() {
         restaurant={selectedRestaurant}
         reservations={reservations}
         isLoading={isReservationsLoading}
+        onCreateReservation={createReservation}
       />
     </div>
   )

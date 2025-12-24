@@ -62,9 +62,27 @@
   color: #333;
 }
 
-/* FullCalendar styling overrides if needed */
+/* FullCalendar styling overrides */
 .fc .fc-event {
   cursor: default;
+}
+
+/* TimeGrid view slots */
+.fc-timegrid-slot-lane {
+  cursor: pointer;
+}
+
+.fc-timegrid-slot-lane:hover {
+  background-color: #e0e0e0 !important;
+}
+
+/* DayGrid view cells */
+.fc-daygrid-day {
+  cursor: pointer;
+}
+
+.fc-daygrid-day:hover {
+  background-color: #e0e0e0 !important;
 }
 
 .fc .fc-toolbar-title {
@@ -92,4 +110,70 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.reservation-prompt {
+  background-color: #2a2a40;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #3498db;
+}
+
+.reservation-prompt h3 {
+  margin-top: 0;
+  color: #3498db;
+}
+
+.reservation-prompt p {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background-color: #1a1a2e;
+  color: white;
+}
+
+.prompt-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.prompt-actions button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+}
+
+.prompt-actions button[type="submit"] {
+  background-color: #3498db;
+  color: white;
+}
+
+.prompt-actions button[type="button"] {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.prompt-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

@@ -37,4 +37,17 @@ public class ReservationController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PostMapping
+    public ResponseEntity<Reservation> createReservation(
+        @RequestBody Reservation reservation
+    ){
+        try{
+            Reservation saved = reservationService.createReservation(reservation);
+            return ResponseEntity.ok(saved);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }

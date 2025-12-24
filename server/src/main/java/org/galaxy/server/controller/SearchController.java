@@ -44,7 +44,6 @@ public class SearchController {
         }catch(Exception e){
             return ResponseEntity.badRequest().build();
         }
-
     }
 
     @GetMapping("/advanced")

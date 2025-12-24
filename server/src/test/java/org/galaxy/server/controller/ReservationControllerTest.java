@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -16,6 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -62,5 +64,33 @@ class ReservationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].reservationName").value("Guest 1"));
+    }
+    @Test
+    void testPostReservations() throws Exception {
+        LocalDateTime start = LocalDateTime.of(2025, 12, 26, 10, 0);
+        LocalDateTime end = LocalDateTime.of(2025, 12, 26, 11, 0);
+        Long restaurantId = 3L;
+        Integer guestCount = 2;
+        String reservationName = "John Doe";
+
+        Reservation reservation = Reservation.builder().restaurantId(restaurantId).reservationName(reservationName).guestCount(guestCount).startTime(start).endTime(end).build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        mockMvc.perform(post("/reservations")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(reservation)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testPostReservationsWithInvalidData() throws Exception {
+        Reservation reservation = Reservation.builder().build();
+        when(reservationService.createReservation(any(Reservation.class)))
+                .thenThrow(new IllegalArgumentException("Reservation must have all required fields"));
+
+        mockMvc.perform(post("/reservations")
+                        .contentType("application/json")
+                        .content(new ObjectMapper().writeValueAsString(reservation)))
+                .andExpect(status().isBadRequest());
     }
 }
