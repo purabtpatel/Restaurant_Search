@@ -23,29 +23,6 @@ public class SearchController {
         this.restaurantService = restaurantService;
     }
 
-    @GetMapping("/basic")
-    public ResponseEntity<List<Restaurant>> getBasicSearch(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) Integer rating,
-            @RequestParam(required = false) Integer distance,
-            @RequestParam(required = false) Integer price,
-            @RequestParam(required = false) String cuisine
-    ) {
-        try{
-            RestaurantSearchOptions inputOptions = new RestaurantSearchOptions.Builder()
-                    .name(name)
-                    .rating(rating)
-                    .distance(distance)
-                    .price(price)
-                    .cuisine(cuisine)
-                    .build();
-            List<Restaurant> results = restaurantService.basicSearch(inputOptions);
-            return ResponseEntity.ok(results);
-        }catch(Exception e){
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
     @GetMapping("/advanced")
     public ResponseEntity<List<Restaurant>> getAdvancedSearch(
             @RequestParam(required = false) String name,

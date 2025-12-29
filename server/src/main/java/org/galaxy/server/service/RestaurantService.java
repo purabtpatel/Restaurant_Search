@@ -19,17 +19,6 @@ public class RestaurantService {
         this.dataLoader = dataLoader;
     }
 
-    public List<Restaurant> basicSearch(RestaurantSearchOptions options) {
-
-        return dataLoader.getRestaurants().stream()
-                .filter(r -> options.getDistance() == null || r.getDistance().equals(options.getDistance()))
-                .filter(r -> options.getRating() == null || r.getRating().equals(options.getRating()))
-                .filter(r -> options.getPrice() == null || r.getPrice().equals(options.getPrice()))
-                .filter(r -> options.getCuisine() == null || r.getCuisine().equals(options.getCuisine()))
-                .filter(r -> options.getName() == null || r.getName().equalsIgnoreCase(options.getName()))
-                .toList();
-    }
-
     public List<Restaurant> advancedSearch(RestaurantSearchOptions options) {
         PriorityQueue<Restaurant> queue = new PriorityQueue<>(new RestaurantComparator());
         int limit = options.getLimit() == null ? 5 : options.getLimit();
