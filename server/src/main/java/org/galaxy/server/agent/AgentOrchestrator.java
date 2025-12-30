@@ -1,6 +1,7 @@
 package org.galaxy.server.agent;
 
 import org.galaxy.server.agent.dto.AgentChatResponse;
+import org.galaxy.server.agent.dto.AgentIntent;
 import org.galaxy.server.agent.dto.PendingAction;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -31,7 +32,33 @@ public class AgentOrchestrator {
 
     public AgentChatResponse handle(String message){
         try{
-            String systemPrompt = String.format("""
+            AgentIntent intent = classifyIntent(message);
+
+            return switch (intent){
+                case SEARCH -> handleSearchIntent(message);
+                case RESERVE -> handleReservationIntent(message);
+            };
+
+        }catch (IllegalArgumentException e){
+            return new AgentChatResponse(
+                    "Sorry, I could not understand your request. Please try again.",
+                    null
+            );
+        }catch(NonTransientAiException e){
+            return new AgentChatResponse(
+                    AgentResponseMapper.formatAiExceptionMessage(e.getMessage()),
+                    null
+            );
+        }catch(Exception e){
+            return new AgentChatResponse(
+                    "Sorry, something went wrong. Please try again.",
+                    null
+            );
+        }
+    }
+
+    private AgentIntent classifyIntent(String message) {
+        String systemPrompt = String.format("""
             You are a restaurant assistant.
             Determine whether the user wants to:
             - search for restaurants
@@ -44,40 +71,34 @@ public class AgentOrchestrator {
             SEARCH or RESERVE
             """, message);
 
-            ChatResponse response = chatModel.call(
-                    new Prompt(
-                            systemPrompt,
-                            OpenAiChatOptions.builder()
-                                    .model("gpt-4o")
-                                    .maxTokens(150)
-                                    .build()
-                    ));
+        ChatResponse response = chatModel.call(
+                new Prompt(
+                        systemPrompt,
+                        OpenAiChatOptions.builder()
+                                .model("gpt-4o")
+                                .maxTokens(150)
+                                .build()
+                ));
+        String raw = Objects.requireNonNull(response.getResult().getOutput().getText()).trim().toUpperCase();
 
-
-            return new AgentChatResponse(
-                    "Please confirm you want to do the following: " + response.getResult().getOutput().getText(),
-                    PendingAction.searchOnly()
-            );
-        }catch(IllegalFormatException e){
-            return new AgentChatResponse("Sorry, I didn't understand that. Please try again.", null);
-        }catch(NonTransientAiException e){
-            return new AgentChatResponse(AgentResponseMapper.formatAiExceptionMessage(e.getMessage()), null);
-        }catch(Exception e){
-            return new AgentChatResponse("Sorry, something went wrong. Please try again.", null);
-        }
+        return switch (raw) {
+            case "SEARCH" -> AgentIntent.SEARCH;
+            case "RESERVE" -> AgentIntent.RESERVE;
+            default -> throw new IllegalArgumentException("Unknown intent: " + raw);
+        };
     }
 
     private AgentChatResponse handleSearchIntent(String message){
         return new AgentChatResponse(
                 "Sure, I can help you find a restaurant.",
-                null
+                PendingAction.search()
         );
     }
 
     private AgentChatResponse handleReservationIntent(String message){
         return new AgentChatResponse(
                 "Sure, I can help you book a reservation. Let me find the best matching restaurant first",
-                PendingAction.searchOnly()
+                PendingAction.reservation()
         );
     }
 }

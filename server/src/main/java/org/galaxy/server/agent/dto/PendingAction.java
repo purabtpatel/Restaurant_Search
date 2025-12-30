@@ -1,14 +1,16 @@
 package org.galaxy.server.agent.dto;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-
 public record PendingAction(
         ActionType type
 ) {
-    public static PendingAction searchOnly() {
+    public static PendingAction search() {
         return new PendingAction(ActionType.SEARCH);
     }
+
+    public static PendingAction reservation(){
+        return new PendingAction(ActionType.PENDING_RESERVATION);
+    }
+
 }
 
 
