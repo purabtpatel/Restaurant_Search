@@ -1,4 +1,4 @@
-package org.galaxy.server.loader;
+package org.galaxy.server.config;
 
 import org.galaxy.server.model.Restaurant;
 import org.junit.jupiter.api.DisplayName;

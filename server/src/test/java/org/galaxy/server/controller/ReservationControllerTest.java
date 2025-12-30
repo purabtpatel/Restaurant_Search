@@ -1,5 +1,7 @@
 package org.galaxy.server.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.galaxy.server.model.Reservation;
 import org.galaxy.server.service.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ class ReservationControllerTest {
 
     private MockMvc mockMvc;
     private ReservationService reservationService;
+    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @BeforeEach
     void setUp() {
@@ -75,7 +77,6 @@ class ReservationControllerTest {
 
         Reservation reservation = Reservation.builder().restaurantId(restaurantId).reservationName(reservationName).guestCount(guestCount).startTime(start).endTime(end).build();
 
-        ObjectMapper objectMapper = new ObjectMapper();
         mockMvc.perform(post("/reservations")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(reservation)))
@@ -90,7 +91,7 @@ class ReservationControllerTest {
 
         mockMvc.perform(post("/reservations")
                         .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(reservation)))
+                        .content(objectMapper.writeValueAsString(reservation)))
                 .andExpect(status().isBadRequest());
     }
 }

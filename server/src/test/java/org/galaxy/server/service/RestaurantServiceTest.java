@@ -1,6 +1,6 @@
 package org.galaxy.server.service;
 
-import org.galaxy.server.loader.DataLoader;
+import org.galaxy.server.config.DataLoader;
 import org.galaxy.server.model.Restaurant;
 import org.galaxy.server.model.RestaurantSearchOptions;
 import org.junit.jupiter.api.BeforeEach;

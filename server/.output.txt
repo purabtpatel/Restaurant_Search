@@ -1,0 +1,320 @@
+
+> [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.044
+s -- in org.galaxy.server.config.DataLoaderTest
+  [INFO] Running org.galaxy.server.controller.ReservationControllerTest
+  OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader
+classes because bootstrap classpath has been appended
+> [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.354
+s -- in org.galaxy.server.controller.ReservationControllerTest
+  [INFO] Running org.galaxy.server.repository.ReservationRepositoryTest
+  11:40:51.084 [main] INFO
+org.springframework.test.context.support.AnnotationConfigContextLoaderUtils --
+Could not detect default configuration classes for test class
+[org.galaxy.server.repository.ReservationRepositoryTest]:
+ReservationRepositoryTest does not declare any static, non-private, non-final,
+nested classes annotated with @Configuration.
+> 2025-12-29T11:40:52.864-05:00  WARN 4936 --- [server] [           main]
+o.s.w.c.s.GenericWebApplicationContext   : Exception encountered during
+context initialization - cancelling refresh attempt:
+org.springframework.beans.factory.BeanCreationException: Error creating bean
+with name 'apiKeyValidator' defined in file [C:\Users\Purab\Coding Projects\Git
+hub\Restaurant_Search\server\target\classes\org\galaxy\server\config\ApiKeyVali
+dator.class]: Failed to instantiate
+[org.galaxy.server.config.ApiKeyValidator]: Constructor threw exception
+  2025-12-29T11:40:52.864-05:00  INFO 4936 --- [server] [           main]
+j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory
+for persistence unit 'default'
+  2025-12-29T11:40:52.866-05:00  INFO 4936 --- [server] [           main]
+com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+>    ErrorMvcAutoConfiguration matched:
+        - @ConditionalOnClass found required classes
+'jakarta.servlet.Servlet', 'org.springframework.web.servlet.DispatcherServlet'
+(OnClassCondition)
+        - found 'session' scope (OnWebApplicationCondition)
+>    ErrorMvcAutoConfiguration#basicErrorController matched:
+>       - @ConditionalOnMissingBean (types:
+org.springframework.boot.web.servlet.error.ErrorController; SearchStrategy:
+current) did not find any beans (OnBeanCondition)
+>    ErrorMvcAutoConfiguration#errorAttributes matched:
+>       - @ConditionalOnMissingBean (types:
+org.springframework.boot.web.servlet.error.ErrorAttributes; SearchStrategy:
+current) did not find any beans (OnBeanCondition)
+>    ErrorMvcAutoConfiguration.DefaultErrorViewResolverConfiguration#convention
+ErrorViewResolver matched:
+>       - @ConditionalOnBean (types:
+org.springframework.web.servlet.DispatcherServlet; SearchStrategy: all) found
+bean 'dispatcherServlet'; @ConditionalOnMissingBean (types:
+org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver;
+SearchStrategy: all) did not find any beans (OnBeanCondition)
+>    ErrorMvcAutoConfiguration.WhitelabelErrorViewConfiguration matched:
+>       - @ConditionalOnBooleanProperty (server.error.whitelabel.enabled=true)
+matched (OnPropertyCondition)
+>       - ErrorTemplate Missing did not find error template view
+(ErrorMvcAutoConfiguration.ErrorTemplateMissingCondition)
+>    ErrorMvcAutoConfiguration.WhitelabelErrorViewConfiguration#beanNameViewRes
+olver matched:
+        - @ConditionalOnMissingBean (types:
+org.springframework.web.servlet.view.BeanNameViewResolver; SearchStrategy:
+all) did not find any beans (OnBeanCondition)
+>
+ErrorMvcAutoConfiguration.WhitelabelErrorViewConfiguration#defaultErrorView
+matched:
+>       - @ConditionalOnMissingBean (names: error; SearchStrategy: all) did
+not find any beans (OnBeanCondition)
+     GenericCacheConfiguration matched:
+        - Cache
+org.springframework.boot.autoconfigure.cache.GenericCacheConfiguration
+automatic cache type (CacheCondition)
+>    ErrorWebFluxAutoConfiguration:
+        Did not match:
+           - @ConditionalOnClass did not find required class
+'org.springframework.web.reactive.config.WebFluxConfigurer' (OnClassCondition)
+>    WebMvcAutoConfiguration.ProblemDetailsErrorHandlingConfiguration:
+        Did not match:
+           - @ConditionalOnBooleanProperty
+(spring.mvc.problemdetails.enabled=true) did not find property
+'spring.mvc.problemdetails.enabled' (OnPropertyCondition)
+> Error starting ApplicationContext. To display the condition evaluation
+report re-run your application with 'debug' enabled.
+> 2025-12-29T11:40:52.899-05:00 ERROR 4936 --- [server] [           main]
+o.s.boot.SpringApplication               : Application run failed
+> org.springframework.beans.factory.BeanCreationException: Error creating bean
+with name 'apiKeyValidator' defined in file [C:\Users\Purab\Coding Projects\Git
+hub\Restaurant_Search\server\target\classes\org\galaxy\server\config\ApiKeyVali
+dator.class]: Failed to instantiate
+[org.galaxy.server.config.ApiKeyValidator]: Constructor threw exception
+          at org.springframework.beans.factory.support.ConstructorResolver.inst
+antiate(ConstructorResolver.java:321) ~[spring-beans-6.2.15.jar:6.2.15]
+          at org.springframework.beans.factory.support.ConstructorResolver.auto
+wireConstructor(ConstructorResolver.java:309) ~[spring-beans-6.2.15.jar:6.2.15]
+> java.lang.IllegalStateException: Failed to load ApplicationContext for
+[WebMergedContextConfiguration@71c2cb26 testClass =
+org.galaxy.server.repository.ReservationRepositoryTest, locations = [],
+classes = [org.galaxy.server.ServerApplication], contextInitializerClasses =
+[], activeProfiles = [], propertySourceDescriptors = [],
+propertySourceProperties = ["org.springframework.boot.test.context.SpringBootTe
+stContextBootstrapper=true"], contextCustomizers = [org.springframework.boot.te
+st.context.filter.ExcludeFilterContextCustomizer@e700eba, org.springframework.b
+oot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectCo
+ntextCustomizer@3d88e6b9,
+org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.spri
+ngframework.boot.test.web.client.TestRestTemplateContextCustomizer@65514add, or
+g.springframework.boot.test.web.reactor.netty.DisableReactorResourceFactoryGlob
+alResourcesContextCustomizerFactory$DisableReactorResourceFactoryGlobalResource
+sContextCustomizerCustomizer@6fa2448b, org.springframework.boot.test.autoconfig
+ure.OnFailureConditionReportContextCustomizerFactory$OnFailureConditionReportCo
+ntextCustomizer@46fb0c33, org.springframework.boot.test.autoconfigure.actuate.o
+bservability.ObservabilityContextCustomizerFactory$DisableObservabilityContextC
+ustomizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyMa
+ppingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servl
+et.WebDriverContextCustomizer@602f8f94,
+org.springframework.test.context.support.DynamicPropertiesContextCustomizer@0,
+org.springframework.boot.test.context.SpringBootTestAnnotation@54aedad0],
+resourceBasePath = "src/main/webapp", contextLoader =
+org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+          at org.springframework.test.context.cache.DefaultCacheAwareContextLoa
+derDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:180)
+~[spring-test-6.2.15.jar:6.2.15]
+          at org.springframework.test.context.support.DefaultTestContext.getApp
+licationContext(DefaultTestContext.java:130) ~[spring-test-6.2.15.jar:6.2.15]
+> Caused by: org.springframework.beans.factory.BeanCreationException: Error
+creating bean with name 'apiKeyValidator' defined in file
+[C:\Users\Purab\Coding Projects\Github\Restaurant_Search\server\target\classes\
+org\galaxy\server\config\ApiKeyValidator.class]: Failed to instantiate
+[org.galaxy.server.config.ApiKeyValidator]: Constructor threw exception
+          at org.springframework.beans.factory.support.ConstructorResolver.inst
+antiate(ConstructorResolver.java:321) ~[spring-beans-6.2.15.jar:6.2.15]
+          at org.springframework.beans.factory.support.ConstructorResolver.auto
+wireConstructor(ConstructorResolver.java:309) ~[spring-beans-6.2.15.jar:6.2.15]
+> [ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed:
+1.859 s <<< FAILURE! -- in
+org.galaxy.server.repository.ReservationRepositoryTest
+> [ERROR] org.galaxy.server.repository.ReservationRepositoryTest.testSaveAndFin
+dReservation -- Time elapsed: 0.002 s <<< ERROR!
+> java.lang.IllegalStateException: Failed to load ApplicationContext for
+[WebMergedContextConfiguration@71c2cb26 testClass =
+org.galaxy.server.repository.ReservationRepositoryTest, locations = [],
+classes = [org.galaxy.server.ServerApplication], contextInitializerClasses =
+[], activeProfiles = [], propertySourceDescriptors = [],
+propertySourceProperties = ["org.springframework.boot.test.context.SpringBootTe
+stContextBootstrapper=true"], contextCustomizers = [org.springframework.boot.te
+st.context.filter.ExcludeFilterContextCustomizer@e700eba, org.springframework.b
+oot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectCo
+ntextCustomizer@3d88e6b9,
+org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.spri
+ngframework.boot.test.web.client.TestRestTemplateContextCustomizer@65514add, or
+g.springframework.boot.test.web.reactor.netty.DisableReactorResourceFactoryGlob
+alResourcesContextCustomizerFactory$DisableReactorResourceFactoryGlobalResource
+sContextCustomizerCustomizer@6fa2448b, org.springframework.boot.test.autoconfig
+ure.OnFailureConditionReportContextCustomizerFactory$OnFailureConditionReportCo
+ntextCustomizer@46fb0c33, org.springframework.boot.test.autoconfigure.actuate.o
+bservability.ObservabilityContextCustomizerFactory$DisableObservabilityContextC
+ustomizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyMa
+ppingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servl
+et.WebDriverContextCustomizer@602f8f94,
+org.springframework.test.context.support.DynamicPropertiesContextCustomizer@0,
+org.springframework.boot.test.context.SpringBootTestAnnotation@54aedad0],
+resourceBasePath = "src/main/webapp", contextLoader =
+org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+          at org.springframework.test.context.cache.DefaultCacheAwareContextLoa
+derDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:180)
+          at org.springframework.test.context.support.DefaultTestContext.getApp
+licationContext(DefaultTestContext.java:130)
+> Caused by: org.springframework.beans.factory.BeanCreationException: Error
+creating bean with name 'apiKeyValidator' defined in file
+[C:\Users\Purab\Coding Projects\Github\Restaurant_Search\server\target\classes\
+org\galaxy\server\config\ApiKeyValidator.class]: Failed to instantiate
+[org.galaxy.server.config.ApiKeyValidator]: Constructor threw exception
+          at org.springframework.beans.factory.support.ConstructorResolver.inst
+antiate(ConstructorResolver.java:321)
+          at org.springframework.beans.factory.support.ConstructorResolver.auto
+wireConstructor(ConstructorResolver.java:309)
+> java.lang.IllegalStateException: ApplicationContext failure threshold (1)
+exceeded: skipping repeated attempt to load context for
+[WebMergedContextConfiguration@54dc163a testClass =
+org.galaxy.server.ServerApplicationTests, locations = [], classes =
+[org.galaxy.server.ServerApplication], contextInitializerClasses = [],
+activeProfiles = [], propertySourceDescriptors = [], propertySourceProperties
+= ["org.springframework.boot.test.context.SpringBootTestContextBootstrapper=tru
+e"], contextCustomizers = [org.springframework.boot.test.context.filter.Exclude
+FilterContextCustomizer@e700eba, org.springframework.boot.test.json.DuplicateJs
+onObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@3d88e6b9,
+ org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.spr
+ingframework.boot.test.web.client.TestRestTemplateContextCustomizer@65514add, o
+rg.springframework.boot.test.web.reactor.netty.DisableReactorResourceFactoryGlo
+balResourcesContextCustomizerFactory$DisableReactorResourceFactoryGlobalResourc
+esContextCustomizerCustomizer@6fa2448b, org.springframework.boot.test.autoconfi
+gure.OnFailureConditionReportContextCustomizerFactory$OnFailureConditionReportC
+ontextCustomizer@46fb0c33, org.springframework.boot.test.autoconfigure.actuate.
+observability.ObservabilityContextCustomizerFactory$DisableObservabilityContext
+Customizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyM
+appingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.serv
+let.WebDriverContextCustomizer@602f8f94,
+org.springframework.test.context.support.DynamicPropertiesContextCustomizer@0,
+org.springframework.boot.test.context.SpringBootTestAnnotation@54aedad0],
+resourceBasePath = "src/main/webapp", contextLoader =
+org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+          at org.springframework.test.context.cache.DefaultCacheAwareContextLoa
+derDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:145)
+~[spring-test-6.2.15.jar:6.2.15]
+          at org.springframework.test.context.support.DefaultTestContext.getApp
+licationContext(DefaultTestContext.java:130) ~[spring-test-6.2.15.jar:6.2.15]
+> [ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed:
+0.008 s <<< FAILURE! -- in org.galaxy.server.ServerApplicationTests
+> [ERROR] org.galaxy.server.ServerApplicationTests.contextLoads -- Time
+elapsed: 0 s <<< ERROR!
+> java.lang.IllegalStateException: ApplicationContext failure threshold (1)
+exceeded: skipping repeated attempt to load context for
+[WebMergedContextConfiguration@54dc163a testClass =
+org.galaxy.server.ServerApplicationTests, locations = [], classes =
+[org.galaxy.server.ServerApplication], contextInitializerClasses = [],
+activeProfiles = [], propertySourceDescriptors = [], propertySourceProperties
+= ["org.springframework.boot.test.context.SpringBootTestContextBootstrapper=tru
+e"], contextCustomizers = [org.springframework.boot.test.context.filter.Exclude
+FilterContextCustomizer@e700eba, org.springframework.boot.test.json.DuplicateJs
+onObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@3d88e6b9,
+ org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.spr
+ingframework.boot.test.web.client.TestRestTemplateContextCustomizer@65514add, o
+rg.springframework.boot.test.web.reactor.netty.DisableReactorResourceFactoryGlo
+balResourcesContextCustomizerFactory$DisableReactorResourceFactoryGlobalResourc
+esContextCustomizerCustomizer@6fa2448b, org.springframework.boot.test.autoconfi
+gure.OnFailureConditionReportContextCustomizerFactory$OnFailureConditionReportC
+ontextCustomizer@46fb0c33, org.springframework.boot.test.autoconfigure.actuate.
+observability.ObservabilityContextCustomizerFactory$DisableObservabilityContext
+Customizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyM
+appingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.serv
+let.WebDriverContextCustomizer@602f8f94,
+org.springframework.test.context.support.DynamicPropertiesContextCustomizer@0,
+org.springframework.boot.test.context.SpringBootTestAnnotation@54aedad0],
+resourceBasePath = "src/main/webapp", contextLoader =
+org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+          at org.springframework.test.context.cache.DefaultCacheAwareContextLoa
+derDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:145)
+          at org.springframework.test.context.support.DefaultTestContext.getApp
+licationContext(DefaultTestContext.java:130)
+> [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055
+s -- in org.galaxy.server.service.RestaurantServiceTest$AdvancedSearchTests
+> [INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.057
+s -- in org.galaxy.server.service.RestaurantServiceTest
+  [INFO]
+  [INFO] Results:
+> [ERROR] Errors:
+> [ERROR]   ServerApplicationTests.contextLoads ï¿½ IllegalState
+ApplicationContext failure threshold (1) exceeded: skipping repeated attempt
+to load context for [WebMergedContextConfiguration@54dc163a testClass =
+org.galaxy.server.ServerApplicationTests, locations = [], classes =
+[org.galaxy.server.ServerApplication], contextInitializerClasses = [],
+activeProfiles = [], propertySourceDescriptors = [], propertySourceProperties
+= ["org.springframework.boot.test.context.SpringBootTestContextBootstrapper=tru
+e"], contextCustomizers = [org.springframework.boot.test.context.filter.Exclude
+FilterContextCustomizer@e700eba, org.springframework.boot.test.json.DuplicateJs
+onObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@3d88e6b9,
+ org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.spr
+ingframework.boot.test.web.client.TestRestTemplateContextCustomizer@65514add, o
+rg.springframework.boot.test.web.reactor.netty.DisableReactorResourceFactoryGlo
+balResourcesContextCustomizerFactory$DisableReactorResourceFactoryGlobalResourc
+esContextCustomizerCustomizer@6fa2448b, org.springframework.boot.test.autoconfi
+gure.OnFailureConditionReportContextCustomizerFactory$OnFailureConditionReportC
+ontextCustomizer@46fb0c33, org.springframework.boot.test.autoconfigure.actuate.
+observability.ObservabilityContextCustomizerFactory$DisableObservabilityContext
+Customizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyM
+appingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.serv
+let.WebDriverContextCustomizer@602f8f94,
+org.springframework.test.context.support.DynamicPropertiesContextCustomizer@0,
+org.springframework.boot.test.context.SpringBootTestAnnotation@54aedad0],
+resourceBasePath = "src/main/webapp", contextLoader =
+org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+> [ERROR]   ReservationRepositoryTest.testSaveAndFindReservation ï¿½
+IllegalState Failed to load ApplicationContext for
+[WebMergedContextConfiguration@71c2cb26 testClass =
+org.galaxy.server.repository.ReservationRepositoryTest, locations = [],
+classes = [org.galaxy.server.ServerApplication], contextInitializerClasses =
+[], activeProfiles = [], propertySourceDescriptors = [],
+propertySourceProperties = ["org.springframework.boot.test.context.SpringBootTe
+stContextBootstrapper=true"], contextCustomizers = [org.springframework.boot.te
+st.context.filter.ExcludeFilterContextCustomizer@e700eba, org.springframework.b
+oot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectCo
+ntextCustomizer@3d88e6b9,
+org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.spri
+ngframework.boot.test.web.client.TestRestTemplateContextCustomizer@65514add, or
+g.springframework.boot.test.web.reactor.netty.DisableReactorResourceFactoryGlob
+alResourcesContextCustomizerFactory$DisableReactorResourceFactoryGlobalResource
+sContextCustomizerCustomizer@6fa2448b, org.springframework.boot.test.autoconfig
+ure.OnFailureConditionReportContextCustomizerFactory$OnFailureConditionReportCo
+ntextCustomizer@46fb0c33, org.springframework.boot.test.autoconfigure.actuate.o
+bservability.ObservabilityContextCustomizerFactory$DisableObservabilityContextC
+ustomizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyMa
+ppingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servl
+et.WebDriverContextCustomizer@602f8f94,
+org.springframework.test.context.support.DynamicPropertiesContextCustomizer@0,
+org.springframework.boot.test.context.SpringBootTestAnnotation@54aedad0],
+resourceBasePath = "src/main/webapp", contextLoader =
+org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+  [INFO]
+> [ERROR] Tests run: 16, Failures: 0, Errors: 2, Skipped: 0
+  [INFO]
+  [INFO]
+------------------------------------------------------------------------
+> [INFO] BUILD FAILURE
+  [INFO]
+------------------------------------------------------------------------
+  [INFO] Total time:  4.796 s
+> [ERROR] Failed to execute goal
+org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on
+project server:
+> [ERROR]
+> [ERROR] See C:\Users\Purab\Coding
+Projects\Github\Restaurant_Search\server\target\surefire-reports for the
+individual test results.
+> [ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and
+[date].dumpstream.
+> [ERROR] -> [Help 1]
+> [ERROR]
+> [ERROR] To see the full stack trace of the errors, re-run Maven with the -e
+switch.
+> [ERROR] Re-run Maven using the -X switch to enable full debug logging.
+> [ERROR]
+> [ERROR] For more information about the errors and possible solutions, please
+read the following articles:
+> [ERROR] [Help 1]
+http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

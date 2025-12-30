@@ -1,4 +1,4 @@
-package org.galaxy.server.loader;
+package org.galaxy.server.config;
 
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
