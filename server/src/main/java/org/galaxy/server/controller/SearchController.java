@@ -33,7 +33,7 @@ public class SearchController {
             @RequestParam(required = false) Integer limit)
     {
         try{
-            RestaurantSearchOptions inputOptions = new RestaurantSearchOptions.Builder()
+            RestaurantSearchOptions inputOptions = RestaurantSearchOptions.builder()
                     .name(name)
                     .rating(rating)
                     .distance(distance)

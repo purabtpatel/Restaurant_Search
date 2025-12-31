@@ -3,6 +3,7 @@ package org.galaxy.server.agent;
 import org.galaxy.server.agent.dto.AgentChatResponse;
 import org.galaxy.server.agent.dto.AgentIntent;
 import org.galaxy.server.agent.dto.PendingAction;
+import org.galaxy.server.agent.tools.RestaurantSearchTool;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -17,21 +18,35 @@ import java.util.*;
 @Component
 public class AgentOrchestrator {
     private final ChatModel chatModel;
+    private final RestaurantSearchTool restaurantSearchTool;
     private final String defaultReservationName;
     private final ZoneId zoneId;
 
     public AgentOrchestrator(
             ChatModel chatModel,
+            RestaurantSearchTool restaurantSearchTool,
             @Value("${app.agent.default-name}") String defaultReservationName,
             @Value("${app.agent.timezone}") String timezone
     ) {
         this.chatModel = chatModel;
+        this.restaurantSearchTool = restaurantSearchTool;
         this.defaultReservationName = defaultReservationName;
         this.zoneId = ZoneId.of(timezone);
     }
 
-    public AgentChatResponse handle(String message){
+    public AgentChatResponse handle(String message, Boolean confirmed){
         try{
+            if(Boolean.TRUE.equals(confirmed)){
+                return handleConfirmedAction();
+            }
+            if(Boolean.FALSE.equals(confirmed)){
+                return new AgentChatResponse(
+                        "Okay, let me know how else I can help.",
+                        null
+                );
+            }
+
+
             AgentIntent intent = classifyIntent(message);
 
             return switch (intent){
@@ -76,7 +91,7 @@ public class AgentOrchestrator {
                         systemPrompt,
                         OpenAiChatOptions.builder()
                                 .model("gpt-4o")
-                                .maxTokens(150)
+                                .maxTokens(10)
                                 .build()
                 ));
         String raw = Objects.requireNonNull(response.getResult().getOutput().getText()).trim().toUpperCase();
@@ -89,8 +104,9 @@ public class AgentOrchestrator {
     }
 
     private AgentChatResponse handleSearchIntent(String message){
+        String searchResultSummary = restaurantSearchTool.search(message);
         return new AgentChatResponse(
-                "Sure, I can help you find a restaurant.",
+                searchResultSummary,
                 PendingAction.search()
         );
     }
@@ -101,4 +117,11 @@ public class AgentOrchestrator {
                 PendingAction.reservation()
         );
     }
+    private AgentChatResponse handleConfirmedAction() {
+        return new AgentChatResponse(
+                "Great. I will proceed with the next step.",
+                null
+        );
+    }
+
 }

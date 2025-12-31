@@ -71,7 +71,7 @@ public class RestaurantServiceTest {
             // Verifies the primary sort rule (Distance ASC).
             // ASSUMPTION: The production code applies a default limit of 5 when none is set,
             // which should exclude the lowest priority restaurant (Cuts Delicious, D=9).
-            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder().build();
+            RestaurantSearchOptions options = RestaurantSearchOptions.builder().build();
 
             List<Restaurant> results = restaurantService.advancedSearch(options);
 
@@ -89,7 +89,7 @@ public class RestaurantServiceTest {
         void testSortByRatingSecondaryCriterion_NoLimitImpact() {
             // Verifies the secondary sort rule (Rating DESC) when Distance is tied (D=1).
             // Since only 3 candidates match, the default limit is irrelevant.
-            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+            RestaurantSearchOptions options = RestaurantSearchOptions.builder()
                     .distance(1)
                     .build();
 
@@ -106,7 +106,7 @@ public class RestaurantServiceTest {
         void testSortByPriceTertiaryCriterion_TieBreaker() {
             // Verifies the tertiary sort rule (Price ASC) when both Distance and Rating are tied.
             // Candidates: R1 (P=10) and R5 (P=15).
-            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+            RestaurantSearchOptions options = RestaurantSearchOptions.builder()
                     .distance(1)
                     .rating(4)
                     .build();
@@ -121,7 +121,7 @@ public class RestaurantServiceTest {
         void testCombinedSortScenario_Limit5Applied() {
             // Verifies the full multi-criteria sort hierarchy on a filtered list (Distance <= 5).
             // Since this returns exactly 5 candidates, the implicit limit is satisfied.
-            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+            RestaurantSearchOptions options = RestaurantSearchOptions.builder()
                     .distance(5)
                     .build();
 
@@ -137,7 +137,7 @@ public class RestaurantServiceTest {
         void testSearchCombinedCriteriaWithExplicitLimit() {
             // Verifies that explicit limits override the default limit of 5.
             // Candidates: R1, R5, R4 (3 matches total). Limit is 2.
-            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+            RestaurantSearchOptions options = RestaurantSearchOptions.builder()
                     .rating(4)
                     .price(20)
                     .limit(2)
@@ -154,7 +154,7 @@ public class RestaurantServiceTest {
         void testLimitExceedsMatchesReturnsAllMatches() {
             // Ensures that if the explicit limit is higher than the number of matches, all matches are returned.
             // Candidates: R1, R5, R6 (3 matches). Limit is 10.
-            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+            RestaurantSearchOptions options = RestaurantSearchOptions.builder()
                     .distance(1)
                     .limit(10)
                     .build();
@@ -168,7 +168,7 @@ public class RestaurantServiceTest {
         @Test
         void testSearchWithEmptyOptionsAndLimit() {
             // Verifies explicit limiting works on the full dataset (6 restaurants).
-            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+            RestaurantSearchOptions options = RestaurantSearchOptions.builder()
                     .limit(3)
                     .build();
 
@@ -182,7 +182,7 @@ public class RestaurantServiceTest {
         @Test
         void testSearchReturnsEmptyWhenNoMatches() {
             // Ensures that multiple filters leading to zero candidates results in an empty list.
-            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+            RestaurantSearchOptions options = RestaurantSearchOptions.builder()
                     .rating(5)
                     .price(1)
                     .build();
@@ -195,7 +195,7 @@ public class RestaurantServiceTest {
         @Test
         void testSearchWithEmptyOptionsReturnsDefaultLimit() {
             // Confirms the default limit of 5 is enforced when no criteria or limit is specified.
-            RestaurantSearchOptions options = new RestaurantSearchOptions.Builder()
+            RestaurantSearchOptions options = RestaurantSearchOptions.builder()
                     .build();
 
             List<Restaurant> results = restaurantService.advancedSearch(options);

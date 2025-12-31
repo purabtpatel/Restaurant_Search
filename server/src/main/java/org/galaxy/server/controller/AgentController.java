@@ -21,7 +21,8 @@ public class AgentController {
     @PostMapping("/chat")
     public AgentChatResponse chat(@RequestBody AgentChatRequest request){
         return agentOrchestrator.handle(
-                request.message()
+                request.message(),
+                request.confirmed()
         );
 
     }
