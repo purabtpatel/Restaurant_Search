@@ -1,8 +1,6 @@
 package org.galaxy.server.agent;
 
-import org.galaxy.server.agent.dto.AgentChatResponse;
-import org.galaxy.server.agent.dto.AgentIntent;
-import org.galaxy.server.agent.dto.PendingAction;
+import org.galaxy.server.agent.dto.*;
 import org.galaxy.server.agent.tools.RestaurantSearchTool;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -13,10 +11,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Objects;
 
 @Component
 public class AgentOrchestrator {
+
     private final ChatModel chatModel;
     private final RestaurantSearchTool restaurantSearchTool;
     private final String defaultReservationName;
@@ -34,40 +33,32 @@ public class AgentOrchestrator {
         this.zoneId = ZoneId.of(timezone);
     }
 
-    public AgentChatResponse handle(String message, Boolean confirmed){
-        try{
-            if(Boolean.TRUE.equals(confirmed)){
-                return handleConfirmedAction();
-            }
-            if(Boolean.FALSE.equals(confirmed)){
-                return new AgentChatResponse(
-                        "Okay, let me know how else I can help.",
-                        null
-                );
-            }
-
-
+    public AgentChatResponse handle(String message, ConversationContext context) {
+        try {
             AgentIntent intent = classifyIntent(message);
 
-            return switch (intent){
-                case SEARCH -> handleSearchIntent(message);
-                case RESERVE -> handleReservationIntent(message);
+            return switch (intent) {
+                case SEARCH -> handleSearchIntent(message, context);
+                case RESERVE -> handleReservationIntent(message, context);
             };
 
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return new AgentChatResponse(
                     "Sorry, I could not understand your request. Please try again.",
-                    null
+                    null,
+                    context
             );
-        }catch(NonTransientAiException e){
+        } catch (NonTransientAiException e) {
             return new AgentChatResponse(
                     AgentResponseMapper.formatAiExceptionMessage(e.getMessage()),
-                    null
+                    null,
+                    context
             );
-        }catch(Exception e){
+        } catch (Exception e) {
             return new AgentChatResponse(
                     "Sorry, something went wrong. Please try again.",
-                    null
+                    null,
+                    context
             );
         }
     }
@@ -78,10 +69,9 @@ public class AgentOrchestrator {
             Determine whether the user wants to:
             - search for restaurants
             - make a reservation
-            
+
             User input: %s
-            
-    
+
             Respond with exactly one word:
             SEARCH or RESERVE
             """, message);
@@ -93,8 +83,12 @@ public class AgentOrchestrator {
                                 .model("gpt-4o")
                                 .maxTokens(10)
                                 .build()
-                ));
-        String raw = Objects.requireNonNull(response.getResult().getOutput().getText()).trim().toUpperCase();
+                )
+        );
+
+        String raw = Objects.requireNonNull(
+                response.getResult().getOutput().getText()
+        ).trim().toUpperCase();
 
         return switch (raw) {
             case "SEARCH" -> AgentIntent.SEARCH;
@@ -103,25 +97,33 @@ public class AgentOrchestrator {
         };
     }
 
-    private AgentChatResponse handleSearchIntent(String message){
-        String searchResultSummary = restaurantSearchTool.search(message);
-        return new AgentChatResponse(
-                searchResultSummary,
+    private AgentChatResponse handleSearchIntent(String message, ConversationContext context) {
+        SearchToolResult result = restaurantSearchTool.search(message);
+
+        ConversationContext updatedContext = new ConversationContext(
+                AgentIntent.SEARCH,
+                result.restaurantIds(),
                 PendingAction.search()
         );
+
+        return new AgentChatResponse(
+                result.summary(),
+                PendingAction.search(),
+                updatedContext
+        );
     }
 
-    private AgentChatResponse handleReservationIntent(String message){
-        return new AgentChatResponse(
-                "Sure, I can help you book a reservation. Let me find the best matching restaurant first",
+    private AgentChatResponse handleReservationIntent(String message, ConversationContext context) {
+        ConversationContext updatedContext = new ConversationContext(
+                AgentIntent.RESERVE,
+                context.lastRestaurantIds(),
                 PendingAction.reservation()
         );
-    }
-    private AgentChatResponse handleConfirmedAction() {
+
         return new AgentChatResponse(
-                "Great. I will proceed with the next step.",
-                null
+                "Sure, I can help you book a reservation. Let me find the best matching restaurant first.",
+                PendingAction.reservation(),
+                updatedContext
         );
     }
-
 }

@@ -88,6 +88,27 @@ Return to the project root when finished:
 cd ..
 ```
 
+### 3. Backend Configuration
+
+Navigate to the backend folder and create a `developer.properties` file for your API keys.
+
+```bash
+cd server/src/main/resources
+touch developer.properties
+```
+
+Add the following line to `developer.properties` (replace `your_api_key_here` with your actual OpenAI API key):
+
+```properties
+spring.ai.openai.api-key=your_api_key_here
+```
+
+Return to the project root when finished:
+
+```bash
+cd ../../../..
+```
+
 ---
 
 ## Running the Application
@@ -129,7 +150,7 @@ Check the console output for the exact ports if they differ.
 ## Notes
 
 * This project is designed for local development
-* No additional environment variables are required by default
+* An OpenAI API key is required for AI-powered features, configured in `developer.properties`
 
 ---
 

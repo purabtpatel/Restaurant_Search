@@ -22,7 +22,7 @@ public class AgentController {
     public AgentChatResponse chat(@RequestBody AgentChatRequest request){
         return agentOrchestrator.handle(
                 request.message(),
-                request.confirmed()
+                request.contextOrEmpty()
         );
 
     }

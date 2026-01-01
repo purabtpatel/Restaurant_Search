@@ -1,14 +1,16 @@
 package org.galaxy.server.agent;
 
-import org.galaxy.server.agent.dto.AgentChatResponse;
-import org.galaxy.server.agent.dto.ActionType;
+import org.galaxy.server.agent.dto.*;
 import org.galaxy.server.agent.tools.RestaurantSearchTool;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.retry.NonTransientAiException;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -44,20 +46,37 @@ class AgentOrchestratorTest {
     void handle_SearchIntent_CallsSearchTool() {
         ChatModel chatModel = mock(ChatModel.class);
         RestaurantSearchTool searchTool = mock(RestaurantSearchTool.class);
-        AgentOrchestrator orchestrator = new AgentOrchestrator(chatModel, searchTool, "Default", "UTC");
 
+        AgentOrchestrator orchestrator =
+                new AgentOrchestrator(chatModel, searchTool, "Default", "UTC");
+
+        // Mock intent classification response
         ChatResponse chatResponse = mock(ChatResponse.class);
         Generation generation = new Generation(new AssistantMessage("SEARCH"));
         when(chatResponse.getResult()).thenReturn(generation);
-        when(chatModel.call(any(org.springframework.ai.chat.prompt.Prompt.class))).thenReturn(chatResponse);
+        when(chatModel.call(any(Prompt.class))).thenReturn(chatResponse);
+
+        // Mock search tool result
+        SearchToolResult toolResult = new SearchToolResult(
+                "I found some restaurants",
+                List.of(1, 2, 3)
+        );
 
         String message = "find me a cheap Italian place";
-        when(searchTool.search(message)).thenReturn("I found some restaurants");
+        when(searchTool.search(message)).thenReturn(toolResult);
 
-        AgentChatResponse response = orchestrator.handle(message, null);
+        ConversationContext context = ConversationContext.empty();
 
+        AgentChatResponse response = orchestrator.handle(message, context);
+
+        // Assertions
         assertEquals("I found some restaurants", response.reply());
         assertNotNull(response.pendingAction());
         assertEquals(ActionType.SEARCH, response.pendingAction().type());
+
+        assertNotNull(response.context());
+        assertEquals(AgentIntent.SEARCH, response.context().lastIntent());
+        assertEquals(List.of(1, 2, 3), response.context().lastRestaurantIds());
     }
+
 }

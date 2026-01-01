@@ -1,6 +1,7 @@
 package org.galaxy.server.agent.tools;
 
 import org.galaxy.server.agent.dto.SearchToolRequest;
+import org.galaxy.server.agent.dto.SearchToolResult;
 import org.galaxy.server.model.Restaurant;
 import org.galaxy.server.model.RestaurantSearchOptions;
 import org.galaxy.server.service.RestaurantService;
@@ -10,6 +11,7 @@ import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -25,7 +27,7 @@ public class RestaurantSearchTool {
         this.chatModel = chatModel;
     }
 
-    public String search(String message) {
+    public SearchToolResult search(String message) {
         SearchToolRequest searchRequest = extractSearchRequest(message);
         
         RestaurantSearchOptions options = RestaurantSearchOptions.builder()
@@ -39,16 +41,13 @@ public class RestaurantSearchTool {
 
         List<Restaurant> restaurants = restaurantService.advancedSearch(options);
 
-        if (restaurants.isEmpty()) {
-            return "I couldn't find any restaurants matching your criteria.";
-        }
+        List<Integer> ids = restaurants.stream()
+                .map(Restaurant::getId)
+                .toList();
 
-        String summary = restaurants.stream()
-                .map(r -> String.format("- %s (Rating: %d, Distance: %d, Price: %d, Cuisine: %s)",
-                        r.getName(), r.getRating(), r.getDistance(), r.getPrice(), r.getCuisine()))
-                .collect(Collectors.joining("\n"));
+        String format = format(restaurants);
 
-        return "I found the following restaurants for you:\n" + summary;
+        return new SearchToolResult(format, ids);
     }
 
     private SearchToolRequest extractSearchRequest(String message) {
@@ -70,5 +69,15 @@ public class RestaurantSearchTool {
                         .build()));
 
         return outputConverter.convert(Objects.requireNonNull(response.getResult().getOutput().getText()));
+    }
+
+    public String format(List<Restaurant> restaurants) {
+        if (restaurants.isEmpty()) {
+            return "I couldn't find any restaurants matching your criteria.";
+        }
+        return "I found the following restaurants for you:\n" + restaurants.stream()
+                .map(r -> String.format("- %s (Rating: %d, Distance: %d, Price: %d, Cuisine: %s)",
+                        r.getName(), r.getRating(), r.getDistance(), r.getPrice(), r.getCuisine()))
+                .collect(Collectors.joining("\n"));
     }
 }
