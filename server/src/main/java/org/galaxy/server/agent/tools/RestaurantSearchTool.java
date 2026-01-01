@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Tool for searching restaurants based on various criteria using an AI model to parse the request.
+ */
 @Component
 public class RestaurantSearchTool {
 

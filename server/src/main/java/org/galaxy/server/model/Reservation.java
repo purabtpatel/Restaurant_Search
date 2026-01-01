@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entity representing a restaurant reservation.
+ */
 @Entity
 @Table(name = "reservations")
 @Data

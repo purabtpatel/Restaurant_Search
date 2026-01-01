@@ -3,6 +3,9 @@ package org.galaxy.server.agent;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Utility class for mapping and formatting responses from the AI agent.
+ */
 public class AgentResponseMapper {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

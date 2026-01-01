@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Component responsible for loading initial restaurant and cuisine data from CSV files.
+ */
 @Component
 public class DataLoader {
     @Autowired

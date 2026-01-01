@@ -2,6 +2,9 @@ package org.galaxy.server.model;
 
 import java.util.Comparator;
 
+/**
+ * Comparator for ranking restaurants based on distance, rating, and price.
+ */
 public class RestaurantComparator implements Comparator<Restaurant> {
     @Override
     public int compare(Restaurant o1, Restaurant o2) {

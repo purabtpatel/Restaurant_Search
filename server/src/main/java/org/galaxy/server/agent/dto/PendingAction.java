@@ -1,5 +1,8 @@
 package org.galaxy.server.agent.dto;
 
+/**
+ * Represents an action that is pending or suggested by the AI agent.
+ */
 public record PendingAction(
         ActionType type
 ) {

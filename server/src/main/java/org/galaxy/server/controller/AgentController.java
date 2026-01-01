@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST controller for handling chat interactions with the restaurant assistant agent.
+ */
 @RestController
 @RequestMapping("/agents")
 public class AgentController {

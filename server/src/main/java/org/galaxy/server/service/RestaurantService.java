@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+/**
+ * Service class for searching and managing restaurant data.
+ */
 @Service
 public class RestaurantService {
 

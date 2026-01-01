@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * REST controller for restaurant search operations.
+ */
 @RestController
 @RequestMapping("/search")
 @CrossOrigin(origins = "http://localhost:5173")

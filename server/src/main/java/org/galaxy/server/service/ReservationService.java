@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Service class for managing restaurant reservations.
+ */
 @Service
 public class ReservationService {
     private final ReservationRepository reservationRepository;

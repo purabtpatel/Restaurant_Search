@@ -2,6 +2,9 @@ package org.galaxy.server.model;
 
 import lombok.Data;
 
+/**
+ * Represents a restaurant with its details.
+ */
 @Data
 public class Restaurant{
     private Integer id;

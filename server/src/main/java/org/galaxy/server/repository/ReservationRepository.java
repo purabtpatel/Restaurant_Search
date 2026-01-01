@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Repository interface for {@link Reservation} entities.
+ */
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 

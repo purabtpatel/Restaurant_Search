@@ -2,6 +2,9 @@ package org.galaxy.server.agent.dto;
 
 import java.util.List;
 
+/**
+ * Represents the state and history of a conversation with the AI agent.
+ */
 public record ConversationContext(
         AgentIntent lastIntent,
         List<Integer> lastRestaurantIds,

@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * REST controller for managing restaurant reservations.
+ */
 @RestController
 @RequestMapping("/reservations")
 @CrossOrigin(origins = "http://localhost:5173")

@@ -13,6 +13,10 @@ import org.springframework.stereotype.Component;
 import java.time.ZoneId;
 import java.util.Objects;
 
+/**
+ * Orchestrates the interaction between the user, the AI chat model, and various tools.
+ * It classifies user intent and delegates the request to the appropriate handler.
+ */
 @Component
 public class AgentOrchestrator {
 
