@@ -24,7 +24,7 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long restaurantId;
+    private Integer restaurantId;
 
     private String reservationName;
 

@@ -23,7 +23,7 @@ public class ReservationRepositoryTest {
     @Test
     public void testSaveAndFindReservation() {
         Reservation reservation = Reservation.builder()
-                .restaurantId(1L)
+                .restaurantId(1)
                 .reservationName("John Doe")
                 .guestCount(4)
                 .startTime(LocalDateTime.now())

@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    List<Reservation> findByRestaurantId(Long restaurantId);
+    List<Reservation> findByRestaurantId(Integer restaurantId);
 
-    List<Reservation> findByRestaurantIdAndStartTimeBetween(Long restaurantId, LocalDateTime startTime, LocalDateTime startTime2);
+    List<Reservation> findByRestaurantIdAndStartTimeBetween(Integer restaurantId, LocalDateTime startTime, LocalDateTime startTime2);
 }

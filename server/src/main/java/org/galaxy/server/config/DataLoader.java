@@ -134,7 +134,7 @@ public class DataLoader {
                     LocalDateTime endDateTime = startDateTime.plusMinutes(durationMinutes);
 
                     Reservation reservation = new Reservation();
-                    reservation.setRestaurantId(Long.valueOf(restaurant.getId()));
+                    reservation.setRestaurantId(restaurant.getId());
                     reservation.setReservationName("Guest " + (i + 1));
                     reservation.setGuestCount(guestCount);
                     reservation.setStartTime(startDateTime);

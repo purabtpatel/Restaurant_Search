@@ -21,7 +21,7 @@ public class ReservationController {
 
     @GetMapping("/restaurant/{restaurantId}")
     public ResponseEntity<List<Reservation>> getReservations(
-            @PathVariable Long restaurantId,
+            @PathVariable Integer restaurantId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
             ){

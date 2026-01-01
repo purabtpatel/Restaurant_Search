@@ -16,11 +16,11 @@ public class ReservationService {
         this.reservationRepository = reservationRepository;
     }
 
-    public List<Reservation> getReservationsByRestaurantId(Long restaurantId){
+    public List<Reservation> getReservationsByRestaurantId(Integer restaurantId){
         return reservationRepository.findByRestaurantId(restaurantId);
     }
 
-    public List<Reservation> getReservationsByRestaurantIdAndTimeBetween(Long restaurantId, LocalDateTime startTime, LocalDateTime startTime2){
+    public List<Reservation> getReservationsByRestaurantIdAndTimeBetween(Integer restaurantId, LocalDateTime startTime, LocalDateTime startTime2){
         return reservationRepository.findByRestaurantIdAndStartTimeBetween(restaurantId, startTime, startTime2);
     }
 

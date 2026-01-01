@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,11 +37,11 @@ class ReservationControllerTest {
 
     @Test
     void testGetReservationsByRestaurantIdOnly() throws Exception {
-        Reservation r1 = Reservation.builder().id(1L).restaurantId(1L).reservationName("Guest 1").build();
-        Reservation r2 = Reservation.builder().id(2L).restaurantId(1L).reservationName("Guest 2").build();
+        Reservation r1 = Reservation.builder().id(1L).restaurantId(1).reservationName("Guest 1").build();
+        Reservation r2 = Reservation.builder().id(2L).restaurantId(1).reservationName("Guest 2").build();
         List<Reservation> reservations = Arrays.asList(r1, r2);
 
-        when(reservationService.getReservationsByRestaurantId(1L)).thenReturn(reservations);
+        when(reservationService.getReservationsByRestaurantId(1)).thenReturn(reservations);
 
         mockMvc.perform(get("/reservations/restaurant/1"))
                 .andExpect(status().isOk())
@@ -54,10 +54,10 @@ class ReservationControllerTest {
     void testGetReservationsWithTimeRange() throws Exception {
         LocalDateTime start = LocalDateTime.of(2025, 12, 22, 10, 0);
         LocalDateTime end = LocalDateTime.of(2025, 12, 22, 12, 0);
-        Reservation r1 = Reservation.builder().id(1L).restaurantId(1L).reservationName("Guest 1").startTime(start).build();
+        Reservation r1 = Reservation.builder().id(1L).restaurantId(1).reservationName("Guest 1").startTime(start).build();
         List<Reservation> reservations = List.of(r1);
 
-        when(reservationService.getReservationsByRestaurantIdAndTimeBetween(anyLong(), any(LocalDateTime.class), any(LocalDateTime.class)))
+        when(reservationService.getReservationsByRestaurantIdAndTimeBetween(anyInt(), any(LocalDateTime.class), any(LocalDateTime.class)))
                 .thenReturn(reservations);
 
         mockMvc.perform(get("/reservations/restaurant/1")
@@ -71,7 +71,7 @@ class ReservationControllerTest {
     void testPostReservations() throws Exception {
         LocalDateTime start = LocalDateTime.of(2025, 12, 26, 10, 0);
         LocalDateTime end = LocalDateTime.of(2025, 12, 26, 11, 0);
-        Long restaurantId = 3L;
+        Integer restaurantId = 3;
         Integer guestCount = 2;
         String reservationName = "John Doe";
 

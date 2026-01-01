@@ -17,7 +17,7 @@ public record PendingAction(
 
 //public record PendingAction(
 //        ActionType type,
-//        Long restaurantId,
+//        Integer restaurantId,
 //        String restaurantName,
 //        LocalDateTime timestamp
 //){}
