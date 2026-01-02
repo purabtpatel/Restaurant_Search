@@ -2,6 +2,7 @@ import { useState } from 'react'
 import SearchBar from './components/SearchBar'
 import RestaurantList from './components/RestaurantList'
 import ReservationModal from './components/ReservationModal'
+import ChatBox from './components/ChatBox'
 import './App.css'
 
 function App() {
@@ -128,6 +129,7 @@ function App() {
         isLoading={isReservationsLoading}
         onCreateReservation={createReservation}
       />
+      <ChatBox />
     </div>
   )
 }

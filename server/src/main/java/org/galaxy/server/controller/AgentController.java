@@ -3,6 +3,7 @@ package org.galaxy.server.controller;
 import org.galaxy.server.agent.AgentOrchestrator;
 import org.galaxy.server.agent.dto.AgentChatRequest;
 import org.galaxy.server.agent.dto.AgentChatResponse;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/agents")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AgentController {
     private final AgentOrchestrator agentOrchestrator;
 

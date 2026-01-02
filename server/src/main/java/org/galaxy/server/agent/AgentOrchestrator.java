@@ -13,10 +13,6 @@ import org.springframework.stereotype.Component;
 import java.time.ZoneId;
 import java.util.Objects;
 
-/**
- * Orchestrates the interaction between the user, the AI chat model, and various tools.
- * It classifies user intent and delegates the request to the appropriate handler.
- */
 @Component
 public class AgentOrchestrator {
 
@@ -39,11 +35,23 @@ public class AgentOrchestrator {
 
     public AgentChatResponse handle(String message, ConversationContext context) {
         try {
+            ConversationContext safeContext =
+                    context == null ? ConversationContext.empty() : context;
+
+            if (safeContext.pendingAction() != null) {
+                ConfirmationIntent confirmation =
+                        classifyConfirmation(message, safeContext);
+
+                if (confirmation != ConfirmationIntent.UNKNOWN) {
+                    return handleConfirmation(confirmation, message, safeContext);
+                }
+            }
+
             AgentIntent intent = classifyIntent(message);
 
             return switch (intent) {
-                case SEARCH -> handleSearchIntent(message, context);
-                case RESERVE -> handleReservationIntent(message, context);
+                case SEARCH -> handleSearchIntent(message, safeContext);
+                case RESERVE -> handleReservationIntent(message, safeContext);
             };
 
         } catch (IllegalArgumentException e) {
@@ -67,6 +75,10 @@ public class AgentOrchestrator {
         }
     }
 
+    /* ============================
+       Intent Classification
+       ============================ */
+
     private AgentIntent classifyIntent(String message) {
         String systemPrompt = String.format("""
             You are a restaurant assistant.
@@ -74,7 +86,8 @@ public class AgentOrchestrator {
             - search for restaurants
             - make a reservation
 
-            User input: %s
+            User input:
+            %s
 
             Respond with exactly one word:
             SEARCH or RESERVE
@@ -94,14 +107,54 @@ public class AgentOrchestrator {
                 response.getResult().getOutput().getText()
         ).trim().toUpperCase();
 
-        return switch (raw) {
-            case "SEARCH" -> AgentIntent.SEARCH;
-            case "RESERVE" -> AgentIntent.RESERVE;
-            default -> throw new IllegalArgumentException("Unknown intent: " + raw);
-        };
+        return AgentIntent.valueOf(raw);
     }
 
-    private AgentChatResponse handleSearchIntent(String message, ConversationContext context) {
+    private ConfirmationIntent classifyConfirmation(
+            String message,
+            ConversationContext context
+    ) {
+        String systemPrompt = String.format("""
+            You are interpreting a follow-up after a restaurant interaction.
+
+            The user may:
+            - confirm they want to proceed
+            - reject the current action
+            - select a specific restaurant
+            - continue searching or refining
+
+            User message:
+            %s
+
+            Respond with exactly ONE word:
+            CONFIRM, REJECT, SELECT, CONTINUE, or UNKNOWN
+            """, message);
+
+        ChatResponse response = chatModel.call(
+                new Prompt(
+                        systemPrompt,
+                        OpenAiChatOptions.builder()
+                                .model("gpt-4o")
+                                .maxTokens(5)
+                                .build()
+                )
+        );
+
+        String raw = Objects.requireNonNull(
+                response.getResult().getOutput().getText()
+        ).trim().toUpperCase();
+
+        return ConfirmationIntent.valueOf(raw);
+    }
+
+    /* ============================
+       Intent Handlers
+       ============================ */
+
+    private AgentChatResponse handleSearchIntent(
+            String message,
+            ConversationContext context
+    ) {
         SearchToolResult result = restaurantSearchTool.search(message);
 
         ConversationContext updatedContext = new ConversationContext(
@@ -117,7 +170,10 @@ public class AgentOrchestrator {
         );
     }
 
-    private AgentChatResponse handleReservationIntent(String message, ConversationContext context) {
+    private AgentChatResponse handleReservationIntent(
+            String message,
+            ConversationContext context
+    ) {
         ConversationContext updatedContext = new ConversationContext(
                 AgentIntent.RESERVE,
                 context.lastRestaurantIds(),
@@ -125,9 +181,61 @@ public class AgentOrchestrator {
         );
 
         return new AgentChatResponse(
-                "Sure, I can help you book a reservation. Let me find the best matching restaurant first.",
+                "Sure, I can help you book a reservation. Which restaurant would you like?",
                 PendingAction.reservation(),
                 updatedContext
         );
+    }
+
+    /* ============================
+       Confirmation Handling
+       ============================ */
+
+    private AgentChatResponse handleConfirmation(
+            ConfirmationIntent confirmation,
+            String message,
+            ConversationContext context
+    ) {
+        return switch (confirmation) {
+
+            case REJECT -> new AgentChatResponse(
+                    "Okay, let me know how else I can help.",
+                    null,
+                    ConversationContext.empty()
+            );
+
+            case CONTINUE -> handleSearchIntent(message, context);
+
+            case SELECT -> new AgentChatResponse(
+                    "Got it. I will use that restaurant.",
+                    PendingAction.reservation(),
+                    new ConversationContext(
+                            AgentIntent.RESERVE,
+                            context.lastRestaurantIds(),
+                            PendingAction.reservation()
+                    )
+            );
+
+            case CONFIRM -> switch (context.pendingAction().type()) {
+
+                case SEARCH -> new AgentChatResponse(
+                        "Great. Which restaurant would you like to book?",
+                        PendingAction.reservation(),
+                        new ConversationContext(
+                                AgentIntent.RESERVE,
+                                context.lastRestaurantIds(),
+                                PendingAction.reservation()
+                        )
+                );
+
+                case PENDING_RESERVATION -> new AgentChatResponse(
+                        "Perfect. I will proceed with the reservation.",
+                        PendingAction.reservation(),
+                        context
+                );
+            };
+
+            case UNKNOWN -> throw new IllegalStateException("Unexpected UNKNOWN confirmation");
+        };
     }
 }
