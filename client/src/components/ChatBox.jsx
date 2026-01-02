@@ -61,6 +61,56 @@ const ChatBox = () => {
     }
   }
 
+  const parseReply = (text) => {
+    const lines = text.split('\n');
+    const elements = [];
+    let currentText = '';
+
+    const restaurantRegex = /^- (.*) \(Rating: (\d+), Distance: (\d+), Price: (\d+), Cuisine: (.*)\)$/;
+
+    lines.forEach((line, index) => {
+      const match = line.match(restaurantRegex);
+      if (match) {
+        if (currentText) {
+          elements.push({ type: 'text', content: currentText.trim() });
+          currentText = '';
+        }
+        elements.push({
+          type: 'restaurant',
+          content: {
+            name: match[1],
+            rating: match[2],
+            distance: match[3],
+            price: match[4],
+            cuisine: match[5]
+          }
+        });
+      } else {
+        currentText += line + '\n';
+      }
+    });
+
+    if (currentText) {
+      elements.push({ type: 'text', content: currentText.trim() });
+    }
+
+    return elements;
+  };
+
+  const RestaurantCard = ({ restaurant }) => (
+    <div className="restaurant-card-mini">
+      <div className="restaurant-card-mini-header">
+        <span className="restaurant-card-mini-name">{restaurant.name}</span>
+        <span className="restaurant-card-mini-rating">⭐ {restaurant.rating}</span>
+      </div>
+      <div className="restaurant-card-mini-details">
+        <span>📍 {restaurant.distance}m</span>
+        <span>💰 ${restaurant.price}</span>
+        <span>🍴 {restaurant.cuisine}</span>
+      </div>
+    </div>
+  );
+
   return (
     <div className={`chat-box ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="chat-header" onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -79,7 +129,19 @@ const ChatBox = () => {
             )}
             {messages.map((msg, index) => (
               <div key={index} className={`chat-message ${msg.sender}`}>
-                <div className="message-bubble">{msg.text}</div>
+                <div className="message-bubble">
+                  {msg.sender === 'assistant' ? (
+                    parseReply(msg.text).map((el, i) => (
+                      el.type === 'restaurant' ? (
+                        <RestaurantCard key={i} restaurant={el.content} />
+                      ) : (
+                        <p key={i}>{el.content}</p>
+                      )
+                    ))
+                  ) : (
+                    msg.text
+                  )}
+                </div>
               </div>
             ))}
             {isLoading && (

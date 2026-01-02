@@ -1,7 +1,7 @@
 .chat-box {
   display: flex;
   flex-direction: column;
-  height: 500px;
+  height: 600px;
   width: 100%;
   max-width: 400px;
   background-color: #fff;
@@ -105,6 +105,59 @@
   background-color: #e9ecef;
   color: #333;
   border-bottom-left-radius: 4px;
+}
+
+.chat-message.assistant .message-bubble p {
+  margin: 0 0 8px 0;
+}
+
+.chat-message.assistant .message-bubble p:last-child {
+  margin-bottom: 0;
+}
+
+.restaurant-card-mini {
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 8px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.restaurant-card-mini-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f3f5;
+  padding-bottom: 4px;
+}
+
+.restaurant-card-mini-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #2c3e50;
+}
+
+.restaurant-card-mini-rating {
+  font-size: 0.8rem;
+  color: #f39c12;
+}
+
+.restaurant-card-mini-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.restaurant-card-mini-details span {
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
 .message-bubble.loading {
